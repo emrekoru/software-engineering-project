@@ -67,3 +67,67 @@ public class WhereAmI extends MapActivity {
     locationManager.requestLocationUpdates(provider, 2000, 10,   
                                            locationListener);
   }
+
+  private final LocationListener locationListener = new LocationListener() {
+    public void onLocationChanged(Location location) {
+      updateWithNewLocation(location);
+    }
+   
+    public void onProviderDisabled(String provider){
+      updateWithNewLocation(null);
+    }
+
+    public void onProviderEnabled(String provider){ }
+    public void onStatusChanged(String provider, int status, 
+                                Bundle extras){ }
+  };
+
+  private void updateWithNewLocation(Location location) {
+    String latLongString;
+    TextView myLocationText;
+    myLocationText = (TextView)findViewById(R.id.myLocationText);
+    String addressString = "No address found";
+
+	if (location != null) {
+         // Update my location marker
+        positionOverlay.setLocation(location);
+
+      // Update the map location.
+      Double geoLat = location.getLatitude()*1E6;
+      Double geoLng = location.getLongitude()*1E6;
+      GeoPoint point = new GeoPoint(geoLat.intValue(), 
+                                    geoLng.intValue());
+
+      mapController.animateTo(point);
+
+      double lat = location.getLatitude();
+      double lng = location.getLongitude();
+      latLongString = "Lat:" + lat + "\nLong:" + lng;
+
+      double latitude = location.getLatitude();
+      double longitude = location.getLongitude();
+
+      Geocoder gc = new Geocoder(this, Locale.getDefault());
+      try {
+        List<Address> addresses = gc.getFromLocation(latitude, 
+                                                     longitude, 1);
+        StringBuilder sb = new StringBuilder();
+        if (addresses.size() > 0) {
+          Address address = addresses.get(0);
+
+          for (int i = 0; i < address.getMaxAddressLineIndex(); i++)
+            sb.append(address.getAddressLine(i)).append("\n");
+
+            sb.append(address.getLocality()).append("\n");
+            sb.append(address.getPostalCode()).append("\n");
+            sb.append(address.getCountryName());
+        }
+        addressString = sb.toString();
+      } catch (IOException e) {}
+    } else {
+      latLongString = "No location found";
+    }
+    myLocationText.setText("Your Current Position is:\n" + 
+                            latLongString + "\n" + addressString);
+  }
+}
