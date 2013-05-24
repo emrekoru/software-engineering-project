@@ -41,3 +41,34 @@ public class MyPositionOverlay extends Overlay {
         GeoPoint(latitude.intValue(),longitude.intValue());
         
         
+// Convert the location to screen pixels     
+      Point point = new Point();
+      projection.toPixels(geoPoint, point);
+
+      RectF oval = new RectF(point.x - mRadius, point.y - mRadius, 
+                             point.x + mRadius, point.y + mRadius);
+
+      // Setup the paint
+      Paint paint = new Paint();
+      paint.setARGB(250, 255, 255, 255);
+      paint.setAntiAlias(true);
+      paint.setFakeBoldText(true);
+
+      Paint backPaint = new Paint();
+      backPaint.setARGB(175, 50, 50, 50);
+      backPaint.setAntiAlias(true);
+
+      RectF backRect = new RectF(point.x + 2 + mRadius, 
+                                 point.y - 3*mRadius,
+                                 point.x + 65, point.y + mRadius);
+
+      // Draw the marker    
+      canvas.drawOval(oval, paint);
+      canvas.drawRoundRect(backRect, 5, 5, backPaint);
+      canvas.drawText("Here I Am", 
+                      point.x + 2*mRadius, point.y, 
+                      paint);
+    }
+    super.draw(canvas, mapView, shadow);
+  }
+}
