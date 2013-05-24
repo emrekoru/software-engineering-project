@@ -72,3 +72,4 @@ public class MyPositionOverlay extends Overlay {
     super.draw(canvas, mapView, shadow);
   }
 }
+
