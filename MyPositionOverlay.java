@@ -40,3 +40,4 @@ public class MyPositionOverlay extends Overlay {
       geoPoint = new 
         GeoPoint(latitude.intValue(),longitude.intValue());
         
+        
