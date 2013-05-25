@@ -8,3 +8,14 @@
     android:id="@+id/myLocationText"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"  
+    android:text="@string/hello"
+  />
+  <com.google.android.maps.MapView
+    android:id="@+id/myMapView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:enabled="true"
+    android:clickable="true"
+    android:apiKey="myMapKey"
+  />
+</LinearLayout>
